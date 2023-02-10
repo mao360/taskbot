@@ -33,6 +33,7 @@ require (
 	github.com/skinass/telegram-bot-api/v5 v5.0.3
 	github.com/spf13/viper v1.14.0
 	github.com/streadway/amqp v1.0.0
+	github.com/stretchr/testify v1.8.1
 	github.com/tarantool/go-tarantool v1.8.0
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/uber/jaeger-lib v2.4.1+incompatible
