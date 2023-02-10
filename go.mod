@@ -1,4 +1,4 @@
-module gitlab.com/vk-go/lectures-2022-2
+module gitlab.com/vk-golang/lectures
 
 go 1.15
 

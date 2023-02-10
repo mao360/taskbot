@@ -16,7 +16,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"gitlab.com/vk-go/lectures-2022-2/09_conf_monitoring/3_tracing/jaeger_grpc/session"
+	"gitlab.com/vk-golang/lectures/09_conf_monitoring/3_tracing/jaeger_grpc/session"
 )
 
 var loginFormTmpl = []byte(`

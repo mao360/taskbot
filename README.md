@@ -64,10 +64,10 @@
 # будучи в своём репозитории
 
 # либо склонить через https
-git pull https://gitlab.com/vk-go/lectures-2022-2.git master
+git pull https://gitlab.com/vk-golang/lectures.git master
 
 # либо склонить через ssh
-git pull git@gitlab.com:vk-go/lectures-2022-2.git master
+git pull git@gitlab.com:vk-golang/lectures.git master
 
 # а потом запушить изменения к себе
 git push origin master
@@ -79,10 +79,10 @@ git push origin master
 
 ```bash
 # По ssh
-git remote add upstream git@gitlab.com:vk-go/lectures-2022-2.git
+git remote add upstream git@gitlab.com:vk-golang/lectures.git
 
 # Или по https
-git remote add upstream https://gitlab.com/vk-go/lectures-2022-2.git
+git remote add upstream https://gitlab.com/vk-golang/lectures.git
 
 # можно проверить свои remote
 git remote -v

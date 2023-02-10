@@ -5,7 +5,7 @@ import (
 	"log"
 	"testing"
 
-	"gitlab.com/vk-go/lectures-2022-2/08_microservices/4_grpc/session"
+	"gitlab.com/vk-golang/lectures/08_microservices/4_grpc/session"
 	"google.golang.org/grpc"
 )
 
