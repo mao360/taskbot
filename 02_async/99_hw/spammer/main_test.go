@@ -117,7 +117,7 @@ func newCollectStrings(strs *[]string) func(in, out chan interface{}) {
 // проверяем, что SelectUsers корректно обрабатывает алиасы и не повторяет одних и тех же юзеров
 func TestAlias(t *testing.T) {
 	inputData := []string{
-		"batman@mail.ru", //is an alias for bruce.wayne@mail.ru
+		"batman@mail.ru", // is an alias for bruce.wayne@mail.ru
 		"bruce.wayne@mail.ru",
 	}
 	expectedOutput := []string{
@@ -158,7 +158,7 @@ func TestParallelPiplines(t *testing.T) {
 			cmd(SelectMessages),
 			cmd(CheckSpam),
 			cmd(func(in, out chan interface{}) {
-				for _ = range in {
+				for range in {
 					cntFirst++
 				}
 			}),
@@ -172,7 +172,7 @@ func TestParallelPiplines(t *testing.T) {
 		cmd(SelectMessages),
 		cmd(CheckSpam),
 		cmd(func(in, out chan interface{}) {
-			for _ = range in {
+			for range in {
 				cntSecond++
 			}
 		}),
@@ -195,10 +195,10 @@ func TestTotal(t *testing.T) {
 		"d.vader@mail.ru",
 		"noname@mail.ru",
 		"e.musk@mail.ru",
-		"spiderman@mail.ru", //is an alias for peter.parker@mail.ru
+		"spiderman@mail.ru", // is an alias for peter.parker@mail.ru
 		"red_prince@mail.ru",
 		"tomasangelo@mail.ru",
-		"batman@mail.ru", //is an alias for bruce.wayne@mail.ru
+		"batman@mail.ru", // is an alias for bruce.wayne@mail.ru
 		"bruce.wayne@mail.ru",
 	}
 	expectedOutput := []string{
