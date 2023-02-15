@@ -26,11 +26,6 @@ type MsgData struct {
 	HasSpam bool
 }
 
-var usersAliases = map[string]string{
-	"batman@mail.ru":    "bruce.wayne@mail.ru",
-	"spiderman@mail.ru": "peter.parker@mail.ru",
-}
-
 // идем в "базу" чтоб получить user_id из email'а
 // каждый запрос занимает 1 секунду
 // можно без проблем выполнять параллельно
@@ -44,8 +39,12 @@ func GetUser(email string) (res User) {
 	time.Sleep(time.Second)
 
 	remail := email
-	if usersAliases[remail] != "" {
-		remail = usersAliases[remail]
+	alias := map[string]string{
+		"batman@mail.ru":    "bruce.wayne@mail.ru",
+		"spiderman@mail.ru": "peter.parker@mail.ru",
+	}[remail]
+	if alias != "" {
+		remail = alias
 	}
 
 	// это симуляция похода в базу и получения реального id
