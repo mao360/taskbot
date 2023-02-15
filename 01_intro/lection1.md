@@ -4,13 +4,14 @@ _class: lead
 style: @import url('https://unpkg.com/tailwindcss@^2/dist/utilities.min.css');
 backgroundImage: url('https://marp.app/assets/hero-background.svg')
 
----
-
-# Почему golang?
 
 ---
 
 # Включить Скринкаст
+
+---
+
+# Заполнить на портале telegram и gitlab
 
 ---
 
@@ -86,6 +87,10 @@ backgroundImage: url('https://marp.app/assets/hero-background.svg')
 - Можно вообще не делать домашки
 - Но если вы делаете домашку - вы её делаете сами
 - За списывание отчисляем с курса
+
+---
+
+# Почему golang?
 
 ---
 
