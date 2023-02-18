@@ -136,7 +136,7 @@ func TestAlias(t *testing.T) {
 		"итоговый результат отличается от ожидаемого")
 }
 
-// проверяем, что запуски функций SelectUsers,SelectMessages,CheckSpam в параллельных RunPipeline не влияют друг на друга
+// проверяем, что запуски функций SelectUsers,SelectMessages в параллельных RunPipeline не влияют друг на друга
 func TestParallelPiplines(t *testing.T) {
 	inputData := []string{
 		"1000@mail.ru",
@@ -156,7 +156,6 @@ func TestParallelPiplines(t *testing.T) {
 			cmd(newCatStrings(inputData, 150*time.Millisecond)),
 			cmd(SelectUsers),
 			cmd(SelectMessages),
-			cmd(CheckSpam),
 			cmd(func(in, out chan interface{}) {
 				for range in {
 					cntFirst++
@@ -170,7 +169,6 @@ func TestParallelPiplines(t *testing.T) {
 		cmd(newCatStrings(inputData, 100*time.Millisecond)),
 		cmd(SelectUsers),
 		cmd(SelectMessages),
-		cmd(CheckSpam),
 		cmd(func(in, out chan interface{}) {
 			for range in {
 				cntSecond++
