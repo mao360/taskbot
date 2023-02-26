@@ -7,6 +7,14 @@ import (
 	"strings"
 )
 
+const (
+	r1   string = "комната"
+	r2   string = "кухня"
+	r3   string = "улица"
+	r4   string = "коридор"
+	door string = "дверь"
+)
+
 type Room struct {
 	Name      string
 	Ways      []string
@@ -40,10 +48,10 @@ func (w *World) LookAround() string { // осмотреться
 
 func (w *World) GoTo(s string) string {
 	for i := range w.P.CurRoom.Ways {
-		if w.P.CurRoom.Ways[i] == s && w.GetRoom(s).IsOpen == true {
+		if w.P.CurRoom.Ways[i] == s && w.GetRoom(s).IsOpen {
 			w.P.CurRoom = w.GetRoom(s)
 			return w.P.CurRoom.Actions["идти"]()
-		} else if w.P.CurRoom.Ways[i] == s && w.GetRoom(s).IsOpen == false {
+		} else if w.P.CurRoom.Ways[i] == s && !w.GetRoom(s).IsOpen {
 			return "дверь закрыта"
 		}
 	}
@@ -57,23 +65,22 @@ func (w *World) PutOnItem(s string) string {
 }
 
 func (w *World) TakeItem(s string) string { // взять
-	if w.P.CurRoom.Inventory[s] == true && w.P.Inventory["рюкзак"] == true {
+	if w.P.CurRoom.Inventory[s] && w.P.Inventory["рюкзак"] {
 		w.P.CurRoom.Inventory[s] = false
 		w.P.Inventory[s] = true
 		return fmt.Sprintf("предмет добавлен в инвентарь: %s", s)
-	} else if w.P.CurRoom.Inventory[s] == false && w.P.Inventory["рюкзак"] == true {
+	} else if !w.P.CurRoom.Inventory[s] && w.P.Inventory["рюкзак"] {
 		return "нет такого"
 	}
 	return "некуда класть"
 }
 
 func (w *World) UseItem(s1, s2 string) string { // применить
-
-	if w.P.Inventory[s1] == false {
+	if !w.P.Inventory[s1] {
 		return fmt.Sprintf("нет предмета в инвентаре - %s", s1)
-	} else if w.P.Inventory[s1] == true && s2 == "дверь" && w.P.CurRoom.Name == "коридор" {
+	} else if w.P.Inventory[s1] && s2 == door && w.P.CurRoom.Name == r4 {
 		for i := range w.Rooms {
-			if w.Rooms[i].Name == "улица" {
+			if w.Rooms[i].Name == r3 {
 				w.Rooms[i].IsOpen = true
 			}
 		}
@@ -102,6 +109,8 @@ func main() {
 }
 
 func initGame() {
+	w.Rooms = []Room{}
+	w.P = Player{}
 	var (
 		corridor Room
 		kitchen  Room
@@ -110,10 +119,7 @@ func initGame() {
 		player   Player
 	)
 
-	w.Rooms = []Room{}
-	w.P = Player{}
-
-	bedroom.Name = "комната"
+	bedroom.Name = r1
 	bedroom.IsOpen = true
 	bedroom.Inventory = map[string]bool{
 		"ключи":     true,
@@ -123,29 +129,33 @@ func initGame() {
 
 	bedroom.Actions = map[string]func() string{
 		"осмотреться": func() string {
-			if w.P.Inventory["ключи"] == false && w.P.Inventory["конспекты"] == false && w.P.Inventory["рюкзак"] == false {
-				return "на столе: ключи, конспекты, на стуле: рюкзак. можно пройти - коридор"
-			} else if w.P.Inventory["ключи"] == false && w.P.Inventory["конспекты"] == false && w.P.Inventory["рюкзак"] == true {
-				return "на столе: ключи, конспекты. можно пройти - коридор"
-			} else if w.P.Inventory["ключи"] == false && w.P.Inventory["конспекты"] == true {
-				return ""
-			} else if w.P.Inventory["ключи"] == true && w.P.Inventory["конспекты"] == false {
-				return "на столе: конспекты. можно пройти - коридор"
+			str := ""
+			switch {
+			case !w.P.Inventory["ключи"] && !w.P.Inventory["конспекты"] && !w.P.Inventory["рюкзак"]:
+				str = "на столе: ключи, конспекты, на стуле: рюкзак. можно пройти - коридор"
+			case !w.P.Inventory["ключи"] && !w.P.Inventory["конспекты"] && w.P.Inventory["рюкзак"]:
+				str = "на столе: ключи, конспекты. можно пройти - коридор"
+			case !w.P.Inventory["ключи"] && w.P.Inventory["конспекты"]:
+				str = ""
+			case w.P.Inventory["ключи"] && !w.P.Inventory["конспекты"]:
+				str = "на столе: конспекты. можно пройти - коридор"
+			default:
+				str = "пустая комната. можно пройти - коридор"
 			}
-			return "пустая комната. можно пройти - коридор"
+			return str
 		},
 		"идти": func() string {
 			return "ты в своей комнате. можно пройти - коридор"
 		},
 	}
 
-	kitchen.Name = "кухня"
+	kitchen.Name = r2
 	kitchen.IsOpen = true
 	kitchen.Inventory = map[string]bool{}
 
 	kitchen.Actions = map[string]func() string{
 		"осмотреться": func() string {
-			if w.P.Inventory["рюкзак"] == true {
+			if w.P.Inventory["рюкзак"] {
 				return "ты находишься на кухне, на столе: чай, надо идти в универ. можно пройти - коридор"
 			}
 			return "ты находишься на кухне, на столе: чай, надо собрать рюкзак и идти в универ. можно пройти - коридор"
@@ -155,7 +165,7 @@ func initGame() {
 		},
 	}
 
-	street.Name = "улица"
+	street.Name = r3
 	street.IsOpen = false
 	street.Inventory = map[string]bool{}
 
@@ -168,7 +178,7 @@ func initGame() {
 		},
 	}
 
-	corridor.Name = "коридор"
+	corridor.Name = r4
 	corridor.IsOpen = true
 	corridor.Inventory = map[string]bool{}
 	corridor.Actions = map[string]func() string{
