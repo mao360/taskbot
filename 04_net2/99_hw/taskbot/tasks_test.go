@@ -25,8 +25,11 @@ import (
 func init() {
 	// upd global var for testing
 	// we use patched version of gopkg.in/telegram-bot-api.v4 ( WebhookURL const -> var)
-	WebhookURL = "http://127.0.0.1:8081"
-	BotToken = "_golangcourse_test"
+	// WebhookURL = "http://127.0.0.1:8081"
+	// BotToken = "_golangcourse_test"
+
+	WebhookURL = "test_hook"
+	BotToken = "test_token"
 }
 
 var (
